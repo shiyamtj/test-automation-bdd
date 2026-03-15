@@ -114,6 +114,15 @@ class Logger {
       `${COLORS.green}${ICONS.success} [${timestamp}]${COLORS.reset} ${message}${dataStr}`,
     );
   }
+
+  /**
+   * Log a separator line for visual organization
+   */
+  separator(): void {
+    console.log(
+      "═══════════════════════════════════════════════════════════════",
+    );
+  }
 }
 
 export const logger = new Logger();

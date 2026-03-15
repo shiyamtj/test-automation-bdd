@@ -27,13 +27,9 @@ export const hooksContext = {
  * Initializes browser, creates a page, and sets up page objects
  */
 Before(async function (scenario: ITestCaseHookParameter) {
-  logger.info(
-    "═══════════════════════════════════════════════════════════════",
-  );
+  logger.separator();
   logger.info(`Starting scenario: ${scenario.pickle.name}`);
-  logger.info(
-    "═══════════════════════════════════════════════════════════════",
-  );
+  logger.separator();
 
   try {
     await launchBrowser();
