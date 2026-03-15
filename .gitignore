@@ -1,0 +1,62 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.example.bak
+
+# Node modules and dependencies
+node_modules/
+yarn.lock
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build and compiled output
+dist/
+build/
+*.js
+*.d.ts
+!cucumber.js
+
+# Test results and reports
+test-results/
+test-report/
+reports/
+coverage/
+.nyc_output/
+
+# Playwright
+.auth/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# IDE and Editor files
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Temporary and backup files
+*.swp
+*.swo
+*~
+*.tmp
+*.temp
+*.bak
+
+# Logs
+logs/
+*.log
+
+# TypeScript
+*.tsbuildinfo
+
+# Cache directories
+.cache/
+.eslintcache

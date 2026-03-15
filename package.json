@@ -1,0 +1,41 @@
+{
+  "name": "test-automation-bdd",
+  "version": "1.0.0",
+  "description": "BDD test automation project using CucumberJS, Playwright, and TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('❌ This project requires Yarn. Please use: yarn install')\"",
+    "test": "cucumber-js",
+    "test:headed": "cucumber-js --parallel 1",
+    "test:debug": "node --inspect-brk node_modules/.bin/cucumber-js --parallel 1",
+    "test:tags": "cucumber-js --tags",
+    "test:smoke": "cucumber-js --tags '@smoke'",
+    "test:regression": "cucumber-js --tags '@regression'",
+    "report": "node scripts/generate-report.js",
+    "clean": "rm -rf test-results && rm -rf reports"
+  },
+  "keywords": [
+    "cucumber",
+    "playwright",
+    "typescript",
+    "bdd",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "yarn": ">=1.22.0",
+    "npm": "please-use-yarn"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^9.5.1",
+    "@playwright/test": "^1.40.1",
+    "@types/node": "^20.10.5",
+    "playwright": "^1.40.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
