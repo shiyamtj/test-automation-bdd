@@ -3,9 +3,6 @@ module.exports = {
     paths: ['tests/features/**/*.feature'],
     require: ['tests/support/**/*.ts', 'tests/steps/**/*.ts'],
     requireModule: ['ts-node/register'],
-    format: [
-      'progress-bar',
-    ],
     parallel: 2,
     dryRun: false,
     failFast: false,
