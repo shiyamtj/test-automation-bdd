@@ -110,8 +110,8 @@ class TestRunner {
         }
       }
       logger.separator();
-      logger.stats(`Parsed results from ${filePath}`);
-      logger.stats(`Passed: ${passed}, Failed: ${failed}, Skipped: ${skipped}`);
+      logger.stat(`Parsed results from ${filePath}`);
+      logger.stat(`Passed: ${passed}, Failed: ${failed}, Skipped: ${skipped}`);
       return { passed, failed, skipped };
     } catch (e) {
       logger.error(`Error parsing result file ${filePath}: ${e}`);
@@ -125,13 +125,13 @@ class TestRunner {
   private logCommandInfo(label: string, env?: Record<string, string>) {
     const envInfo = env ? ` with env ${JSON.stringify(env)}` : "";
     logger.separator();
-    logger.stats(`▶ Starting command: ${label}${envInfo}`);
+    logger.stat(`▶ Starting command: ${label}${envInfo}`);
     logger.separator();
   }
 
   private logBatchInfo(batchIndex: number, totalBatches: number) {
     logger.separator();
-    logger.stats(
+    logger.stat(
       `Running batch ${batchIndex + 1}/${totalBatches} (up to ${this.batchSize} tests)`,
     );
     logger.separator();
@@ -139,7 +139,7 @@ class TestRunner {
 
   private logBatchResult(passed: number, failed: number, skipped: number) {
     logger.separator();
-    logger.stats(
+    logger.stat(
       `Batch result – Passed: ${passed}, Failed: ${failed}, Skipped: ${skipped}`,
     );
     logger.separator();
@@ -151,11 +151,11 @@ class TestRunner {
     totalSkipped: number,
   ) {
     logger.separator();
-    logger.stats("Batch Execution Summary ");
+    logger.stat("Batch Execution Summary ");
     logger.separator();
-    logger.stats(`Total Passed : ${totalPassed}`);
-    logger.stats(`Total Failed : ${totalFailed}`);
-    logger.stats(`Total Skipped: ${totalSkipped}`);
+    logger.stat(`Total Passed : ${totalPassed}`);
+    logger.stat(`Total Failed : ${totalFailed}`);
+    logger.stat(`Total Skipped: ${totalSkipped}`);
     logger.separator();
   }
 

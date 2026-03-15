@@ -98,14 +98,14 @@ class Logger {
   }
 
   /** Log stats message */
-  stats(message: string, data?: unknown): void {
+  stat(message: string, data?: unknown): void {
     const dataStr = data ? ` ${JSON.stringify(data)}` : "";
     console.log(`${COLORS.cyan} ${message} ${COLORS.reset}${dataStr}`);
   }
 
   /** Log a separator line for visual organization */
   separator(): void {
-    console.log(`${COLORS.cyan} ${"-".repeat(100)} ${COLORS.reset}`);
+    console.log(`${COLORS.cyan}${"-".repeat(100)}${COLORS.reset}`);
   }
 }
 
