@@ -20,16 +20,7 @@ const COLORS = {
   gray: "\x1b[90m",
   green: "\x1b[32m",
   cyan: "\x1b[36m",
-};
-
-// Icons that work in GitHub Actions and most terminals
-const ICONS = {
-  info: "ℹ️ ",
-  warn: "⚠️ ",
-  error: "❌",
-  debug: "🐛",
-  success: "✅",
-  arrow: "→",
+  grey: "\x1b[90m",
 };
 
 class Logger {
@@ -38,55 +29,41 @@ class Logger {
     process.env.CI === "true" || process.env.GITHUB_ACTIONS === "true";
 
   /**
-   * Formats a log message with timestamp, level, icon, and optional data
+   * Formats a log message with timestamp, level, and optional data
    * Uses ANSI colors for better readability in both local and CI environments
    */
   private format(level: LogLevel, message: string, data?: unknown): string {
     const timestamp = new Date().toISOString();
-    const dataStr = data ? ` ${ICONS.arrow} ${JSON.stringify(data)}` : "";
-
-    let icon = "";
+    const dataStr = data ? ` ${JSON.stringify(data)}` : "";
     let color = COLORS.reset;
-
     switch (level) {
       case LogLevel.INFO:
-        icon = ICONS.info;
-        color = COLORS.blue;
+        color = COLORS.grey;
         break;
       case LogLevel.WARN:
-        icon = ICONS.warn;
         color = COLORS.yellow;
         break;
       case LogLevel.ERROR:
-        icon = ICONS.error;
         color = COLORS.red;
         break;
       case LogLevel.DEBUG:
-        icon = ICONS.debug;
-        color = COLORS.cyan;
+        color = COLORS.grey;
         break;
     }
-
-    return `${color}${icon} [${timestamp}] [${level}]${COLORS.reset} ${message}${dataStr}`;
+    return `${color}[${timestamp}] [${level}]${COLORS.reset} ${message}${dataStr}`;
   }
 
-  /**
-   * Log info level message (blue)
-   */
+  /** Log info level message */
   info(message: string, data?: unknown): void {
     console.log(this.format(LogLevel.INFO, message, data));
   }
 
-  /**
-   * Log warning level message (yellow)
-   */
+  /** Log warning level message */
   warn(message: string, data?: unknown): void {
     console.warn(this.format(LogLevel.WARN, message, data));
   }
 
-  /**
-   * Log error level message (red)
-   */
+  /** Log error level message */
   error(message: string, error?: Error | unknown): void {
     const errorData =
       error instanceof Error
@@ -95,33 +72,40 @@ class Logger {
     console.error(this.format(LogLevel.ERROR, message, errorData));
   }
 
-  /**
-   * Log debug level message (cyan) - only in development
-   */
+  /** Log debug level message - only in development */
   debug(message: string, data?: unknown): void {
     if (this.isDev) {
       console.debug(this.format(LogLevel.DEBUG, message, data));
     }
   }
 
-  /**
-   * Log success message (green icon)
-   */
+  /** Log success message (green) */
   success(message: string, data?: unknown): void {
     const timestamp = new Date().toISOString();
-    const dataStr = data ? ` ${ICONS.arrow} ${JSON.stringify(data)}` : "";
+    const dataStr = data ? ` ${JSON.stringify(data)}` : "";
     console.log(
-      `${COLORS.green}${ICONS.success} [${timestamp}]${COLORS.reset} ${message}${dataStr}`,
+      `${COLORS.green}[${timestamp}]${COLORS.reset} ${message}${dataStr}`,
     );
   }
 
-  /**
-   * Log a separator line for visual organization
-   */
-  separator(): void {
+  /** Log data message (yellow) */
+  data(message: string, data?: unknown): void {
+    const timestamp = new Date().toISOString();
+    const dataStr = data ? ` ${JSON.stringify(data)}` : "";
     console.log(
-      "═══════════════════════════════════════════════════════════════",
+      `${COLORS.yellow}[${timestamp}]${COLORS.reset} ${message}${dataStr}`,
     );
+  }
+
+  /** Log stats message */
+  stats(message: string, data?: unknown): void {
+    const dataStr = data ? ` ${JSON.stringify(data)}` : "";
+    console.log(`${COLORS.cyan} ${message} ${COLORS.reset}${dataStr}`);
+  }
+
+  /** Log a separator line for visual organization */
+  separator(): void {
+    console.log(`${COLORS.cyan} ${"-".repeat(100)} ${COLORS.reset}`);
   }
 }
 
