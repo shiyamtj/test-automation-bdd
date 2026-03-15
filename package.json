@@ -10,7 +10,7 @@
     "test:regression": "cucumber-js --tags @regression",
     "clean": "rm -rf test-results && rm -rf reports",
     "report": "node generate-report.js",
-    "test:concurrent": "yarn clean &&ts-node run-tests.ts"
+    "test:concurrent": "ts-node run-tests.ts"
   },
   "keywords": [
     "cucumber",

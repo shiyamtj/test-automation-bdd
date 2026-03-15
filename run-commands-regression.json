@@ -1,0 +1,56 @@
+[
+  {
+    "command": "cucumber-js",
+    "args": ["--format", "json:test-results/cucumber-results-chromium-desktop.json", "--tags", "@regression"],
+    "label": "chromium-desktop",
+    "env": { "BROWSER": "chromium", "VIEWPORT_PRESET": "desktop" }
+  },
+  {
+    "command": "cucumber-js",
+    "args": ["--format", "json:test-results/cucumber-results-firefox-desktop.json", "--tags", "@regression"],
+    "label": "firefox-desktop",
+    "env": { "BROWSER": "firefox", "VIEWPORT_PRESET": "desktop" }
+  },
+  {
+    "command": "cucumber-js",
+    "args": ["--format", "json:test-results/cucumber-results-webkit-desktop.json", "--tags", "@regression"],
+    "label": "webkit-desktop",
+    "env": { "BROWSER": "webkit", "VIEWPORT_PRESET": "desktop" }
+  },
+  {
+    "command": "cucumber-js",
+    "args": ["--format", "json:test-results/cucumber-results-chromium-tablet.json", "--tags", "@regression"],
+    "label": "chromium-tablet",
+    "env": { "BROWSER": "chromium", "VIEWPORT_PRESET": "tablet" }
+  },
+  {
+    "command": "cucumber-js",
+    "args": ["--format", "json:test-results/cucumber-results-firefox-tablet.json", "--tags", "@regression"],
+    "label": "firefox-tablet",
+    "env": { "BROWSER": "firefox", "VIEWPORT_PRESET": "tablet" }
+  },
+  {
+    "command": "cucumber-js",
+    "args": ["--format", "json:test-results/cucumber-results-webkit-tablet.json", "--tags", "@regression"],
+    "label": "webkit-tablet",
+    "env": { "BROWSER": "webkit", "VIEWPORT_PRESET": "tablet" }
+  },
+  {
+    "command": "cucumber-js",
+    "args": ["--format", "json:test-results/cucumber-results-chromium-mobile.json", "--tags", "@regression"],
+    "label": "chromium-mobile",
+    "env": { "BROWSER": "chromium", "VIEWPORT_PRESET": "mobile" }
+  },
+  {
+    "command": "cucumber-js",
+    "args": ["--format", "json:test-results/cucumber-results-firefox-mobile.json", "--tags", "@regression"],
+    "label": "firefox-mobile",
+    "env": { "BROWSER": "firefox", "VIEWPORT_PRESET": "mobile" }
+  },
+  {
+    "command": "cucumber-js",
+    "args": ["--format", "json:test-results/cucumber-results-webkit-mobile.json", "--tags", "@regression"],
+    "label": "webkit-mobile",
+    "env": { "BROWSER": "webkit", "VIEWPORT_PRESET": "mobile" }
+  }
+]
