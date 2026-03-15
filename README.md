@@ -9,24 +9,24 @@ test-automation-bdd/
 ├── tests/                            # All test-related code
 │   ├── features/                     # Gherkin feature files
 │   │   └── login.feature             # Login test scenarios
+│   ├── features/                     # Gherkin feature files
+│   │   └── login.feature             # Login test scenarios
 │   ├── steps/                        # Step definitions (Gherkin implementation)
 │   │   └── login.steps.ts            # Login step definitions
-│   ├── hooks/                        # Cucumber lifecycle hooks
-│   │   └── hooks.ts                  # Setup/teardown hooks
+│   ├── support/                      # Cucumber support code
+│   │   ├── hooks.ts                  # Setup/teardown lifecycle hooks
+│   │   └── CustomWorld.ts            # Cucumber World fixture class
 │   ├── pages/                        # Page Object Models
 │   │   ├── BasePage.ts               # Base class with common methods
 │   │   ├── LoginPage.ts              # Login page object
 │   │   └── InventoryPage.ts          # Inventory page object
 │   ├── config/                       # Configuration & constants
 │   │   ├── index.ts                  # Config barrel export
-│   │   ├── constants.ts              # URLs, timeouts, messages
-│   │   ├── browser.config.ts         # Browser launch settings
-│   │   └── testdata.ts               # Test users & products
+│   │   ├── constants.ts              # URLs, timeouts, test users, messages
+│   │   └── browser.config.ts         # Browser launch settings
 │   ├── utils/                        # Test utilities
 │   │   ├── Logger.ts                 # Logging utility
 │   │   └── BrowserManager.ts         # Browser lifecycle management
-│   └── fixtures/                     # Test data fixtures
-│       └── users.json                # User test data
 ├── cucumber.js                       # Cucumber configuration
 ├── tsconfig.json                     # TypeScript configuration
 ├── package.json                      # Dependencies and scripts
@@ -43,16 +43,19 @@ test-automation-bdd/
 ## Installation
 
 1. **Clone or navigate to the project:**
+
    ```bash
    cd test-automation-bdd
    ```
 
 2. **Install dependencies using Yarn:**
+
    ```bash
    yarn install
    ```
 
 3. **Set up environment variables:**
+
    ```bash
    cp .env.example .env
    ```
@@ -67,34 +70,49 @@ test-automation-bdd/
 ## Running Tests
 
 ### Run all tests
+
 ```bash
 yarn test
 ```
 
 ### Run tests in headed mode
+
 ```bash
 yarn test:headed
 ```
 
 ### Run smoke tests only
+
 ```bash
 yarn test:smoke
 ```
 
 ### Run regression tests only
+
 ```bash
 yarn test:regression
 ```
 
 ### Run tests with specific tags
+
 ```bash
 yarn test:tags @login
 ```
 
 ### Debug tests
+
 ```bash
 yarn test:debug
 ```
+
+## Test Architecture
+
+The project uses the **Page Object Model** pattern with **Cucumber's World fixture** for clean, maintainable tests:
+
+- **CustomWorld**: Cucumber World class that provides page object instances and browser page to step definitions
+- **Page Objects**: Encapsulate UI interactions and element locators for each page
+- **Step Definitions**: Implement Gherkin steps using the CustomWorld context (`this.loginPage`)
+- **Hooks**: Before/After lifecycle hooks manage browser and page setup/teardown
 
 ## Test Features
 
@@ -107,13 +125,14 @@ The project includes comprehensive login test scenarios:
 - 🔄 Navigation to reset password
 
 Each scenario is tagged with:
+
 - `@smoke`: Quick smoke tests
 - `@regression`: Full regression test suite
-- `@login`: Login-related tests
 
 ## Page Object Model
 
 ### LoginPage
+
 - `fillUsername(username)` - Fill username field
 - `fillPassword(password)` - Fill password field
 - `clickLogin()` - Click login button
@@ -121,6 +140,7 @@ Each scenario is tagged with:
 - `clickResetPassword()` - Click reset password link
 
 ### InventoryPage
+
 - `isProductsListVisible()` - Check if products are visible
 - `getProductCount()` - Get number of products
 - `isOnInventoryPage()` - Verify user is on inventory page
@@ -143,11 +163,13 @@ ACTION_TIMEOUT=10000           # milliseconds
 The following credentials are available for testing:
 
 ### Valid Users
+
 - Username: `standard_user` | Password: `secret_sauce`
 - Username: `problem_user` | Password: `secret_sauce`
 - Username: `performance_glitch_user` | Password: `secret_sauce`
 
 ### Locked User
+
 - Username: `locked_out_user` | Password: `secret_sauce`
 
 ## Project Dependencies
@@ -190,13 +212,16 @@ Test results are generated in the following locations:
 ## Troubleshooting
 
 ### Tests fail with timeout errors
+
 - Increase `NAVIGATION_TIMEOUT` or `ACTION_TIMEOUT` in `.env`
 
 ### Browser won't start
+
 - Ensure Playwright browsers are installed: `npx playwright install`
 - Check BROWSER environment variable is set correctly
 
 ### Element not found errors
+
 - Verify the application URL is correct in `.env`
 - Use browser DevTools to inspect element selectors
 - Update selectors in page classes if application changed
@@ -217,4 +242,3 @@ MIT
 ## Contributing
 
 Feel free to extend this project with additional features, page objects, and test scenarios.
-

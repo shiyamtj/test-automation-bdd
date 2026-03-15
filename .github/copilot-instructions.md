@@ -39,8 +39,9 @@ test-automation-bdd/
 │   │   └── login.feature             # Login test scenarios
 │   ├── steps/                        # Step definitions (Gherkin implementation)
 │   │   └── login.steps.ts            # Login step definitions
-│   ├── hooks/                        # Cucumber lifecycle hooks
-│   │   └── hooks.ts                  # Setup/teardown hooks (browser initialization)
+│   ├── support/                      # Cucumber support code
+│   │   ├── hooks.ts                  # Setup/teardown lifecycle hooks
+│   │   └── CustomWorld.ts            # Cucumber World fixture class
 │   ├── pages/                        # Page Object Models
 │   │   ├── BasePage.ts               # Base class with common methods
 │   │   ├── LoginPage.ts              # Login page object
@@ -151,10 +152,12 @@ All configuration values have sensible defaults defined in `tests/config/constan
    - Create file with naming pattern: `feature-name.steps.ts`
    - Example: `tests/steps/checkout.steps.ts`
    - Use `Given`, `When`, `Then` decorators from `@cucumber/cucumber`
-   - Access page objects and browser from `hooksContext` defined in hooks.ts
+   - Access page objects and browser via CustomWorld context: `async function (this: CustomWorld)`
+   - Reference pages as `this.loginPage`, `this.inventoryPage`, `this.page`
 
-4. **Update hooks** if needed in `tests/hooks/hooks.ts`
-   - Add Before hooks for scenario-specific setup
+4. **Update support code** if needed in `tests/support/`
+   - Add page object properties to `tests/support/CustomWorld.ts` for new pages
+   - Update hooks in `tests/support/hooks.ts` to instantiate new page objects
    - Use After hooks for cleanup or reporting
 
 5. **Run tests** with appropriate command:
