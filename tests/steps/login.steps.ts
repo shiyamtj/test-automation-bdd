@@ -1,7 +1,7 @@
-import { When, Then, Given } from '@cucumber/cucumber';
-import { expect } from '@playwright/test';
-import { hooksContext } from '../hooks/hooks';
-import { logger } from '../utils/Logger';
+import { When, Then, Given } from "@cucumber/cucumber";
+import { expect } from "@playwright/test";
+import { CustomWorld } from "../support/CustomWorld";
+import { logger } from "../utils/Logger";
 
 // ============================================================================
 // GIVEN STEPS - Preconditions for test scenarios
@@ -10,10 +10,13 @@ import { logger } from '../utils/Logger';
 /**
  * Navigate to SauceDemo login page
  */
-Given('I navigate to the SauceDemo login page', async () => {
-  logger.info('Step: Navigating to SauceDemo login page');
-  await hooksContext.loginPage!.goto();
-});
+Given(
+  "I navigate to the SauceDemo login page",
+  async function (this: CustomWorld) {
+    logger.info("Step: Navigating to SauceDemo login page");
+    await this.loginPage.goto();
+  },
+);
 
 // ============================================================================
 // WHEN STEPS - Actions performed during test scenarios
@@ -22,52 +25,58 @@ Given('I navigate to the SauceDemo login page', async () => {
 /**
  * Enter username in username field
  */
-When('I enter username {string}', async (username: string) => {
-  logger.info(`Step: Entering username: ${username}`);
-  await hooksContext.loginPage!.fillUsername(username);
-});
+When(
+  "I enter username {string}",
+  async function (this: CustomWorld, username: string) {
+    logger.info(`Step: Entering username: ${username}`);
+    await this.loginPage.fillUsername(username);
+  },
+);
 
 /**
  * Enter password in password field
  */
-When('I enter password {string}', async (password: string) => {
-  logger.info('Step: Entering password');
-  await hooksContext.loginPage!.fillPassword(password);
-});
+When(
+  "I enter password {string}",
+  async function (this: CustomWorld, password: string) {
+    logger.info("Step: Entering password");
+    await this.loginPage.fillPassword(password);
+  },
+);
 
 /**
  * Click login button and wait for navigation
  */
-When('I click the login button', async () => {
-  logger.info('Step: Clicking login button');
-  await hooksContext.loginPage!.clickLogin();
+When("I click the login button", async function (this: CustomWorld) {
+  logger.info("Step: Clicking login button");
+  await this.loginPage.clickLogin();
   // Wait for navigation to complete
-  await hooksContext.page!.waitForLoadState('networkidle');
+  await this.page.waitForLoadState("networkidle");
 });
 
 /**
  * Clear username field without entering anything
  */
-When('I leave the username field empty', async () => {
-  logger.info('Step: Leaving username field empty');
-  await hooksContext.loginPage!.clearUsername();
+When("I leave the username field empty", async function (this: CustomWorld) {
+  logger.info("Step: Leaving username field empty");
+  await this.loginPage.clearUsername();
 });
 
 /**
  * Clear password field without entering anything
  */
-When('I leave the password field empty', async () => {
-  logger.info('Step: Leaving password field empty');
-  await hooksContext.loginPage!.clearPassword();
+When("I leave the password field empty", async function (this: CustomWorld) {
+  logger.info("Step: Leaving password field empty");
+  await this.loginPage.clearPassword();
 });
 
 /**
  * Click on forgot password link
  */
-When('I click on the forgot password link', async () => {
-  logger.info('Step: Clicking forgot password link');
-  await hooksContext.loginPage!.clickResetPassword();
-  await hooksContext.page!.waitForLoadState('networkidle');
+When("I click on the forgot password link", async function (this: CustomWorld) {
+  logger.info("Step: Clicking forgot password link");
+  await this.loginPage.clickResetPassword();
+  await this.page.waitForLoadState("networkidle");
 });
 
 // ============================================================================
@@ -77,47 +86,56 @@ When('I click on the forgot password link', async () => {
 /**
  * Verify successful redirect to inventory page
  */
-Then('I should be redirect to the inventory page', async () => {
-  logger.info('Step: Asserting redirect to inventory page');
-  const isOnInventoryPage = await hooksContext.inventoryPage!.isOnInventoryPage();
-  expect(isOnInventoryPage).toBe(true);
-});
+Then(
+  "I should be redirect to the inventory page",
+  async function (this: CustomWorld) {
+    logger.info("Step: Asserting redirect to inventory page");
+    const isOnInventoryPage = await this.inventoryPage.isOnInventoryPage();
+    expect(isOnInventoryPage).toBe(true);
+  },
+);
 
 /**
  * Verify products list is visible and contains products
  */
-Then('I should see the products list', async () => {
-  logger.info('Step: Asserting products list visibility and count');
-  const isVisible = await hooksContext.inventoryPage!.isProductsListVisible();
+Then("I should see the products list", async function (this: CustomWorld) {
+  logger.info("Step: Asserting products list visibility and count");
+  const isVisible = await this.inventoryPage.isProductsListVisible();
   expect(isVisible).toBe(true);
 
-  const productCount = await hooksContext.inventoryPage!.getProductCount();
+  const productCount = await this.inventoryPage.getProductCount();
   expect(productCount).toBeGreaterThan(0);
 });
 
 /**
  * Verify error message is displayed
  */
-Then('I should see an error message', async () => {
-  logger.info('Step: Asserting error message visibility');
-  const isErrorVisible = await hooksContext.loginPage!.isErrorVisible();
+Then("I should see an error message", async function (this: CustomWorld) {
+  logger.info("Step: Asserting error message visibility");
+  const isErrorVisible = await this.loginPage.isErrorVisible();
   expect(isErrorVisible).toBe(true);
 });
 
 /**
  * Verify error message contains expected text
  */
-Then('the error message should contain {string}', async (expectedText: string) => {
-  logger.info(`Step: Asserting error message contains: "${expectedText}"`);
-  const errorMessage = await hooksContext.loginPage!.getErrorMessage();
-  expect(errorMessage).toContain(expectedText);
-});
+Then(
+  "the error message should contain {string}",
+  async function (this: CustomWorld, expectedText: string) {
+    logger.info(`Step: Asserting error message contains: "${expectedText}"`);
+    const errorMessage = await this.loginPage.getErrorMessage();
+    expect(errorMessage).toContain(expectedText);
+  },
+);
 
 /**
  * Verify user is redirected to password reset page
  */
-Then('I should see the password reset page', async () => {
-  logger.info('Step: Asserting password reset page');
-  const currentUrl = await hooksContext.page!.url();
-  expect(currentUrl).toContain('reset_password');
-});
+Then(
+  "I should see the password reset page",
+  async function (this: CustomWorld) {
+    logger.info("Step: Asserting password reset page");
+    const currentUrl = await this.page.url();
+    expect(currentUrl).toContain("reset_password");
+  },
+);

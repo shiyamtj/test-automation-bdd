@@ -6,12 +6,10 @@
   "scripts": {
     "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('❌ This project requires Yarn. Please use: yarn install')\"",
     "test": "cucumber-js",
-    "test:headed": "cucumber-js --parallel 1",
-    "test:debug": "node --inspect-brk node_modules/.bin/cucumber-js --parallel 1",
-    "test:tags": "cucumber-js --tags",
+    "test:mobile": "VIEWPORT_PRESET=mobile cucumber-js",
+    "test:tablet": "VIEWPORT_PRESET=tablet cucumber-js",
     "test:smoke": "cucumber-js --tags '@smoke'",
     "test:regression": "cucumber-js --tags '@regression'",
-    "report": "node scripts/generate-report.js",
     "clean": "rm -rf test-results && rm -rf reports"
   },
   "keywords": [

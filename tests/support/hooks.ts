@@ -1,32 +1,34 @@
-import { Before, After, ITestCaseHookParameter } from "@cucumber/cucumber";
+import {
+  Before,
+  After,
+  setWorldConstructor,
+  ITestCaseHookParameter,
+} from "@cucumber/cucumber";
 import { Page } from "@playwright/test";
 import { LoginPage } from "../pages/LoginPage";
 import { InventoryPage } from "../pages/InventoryPage";
+import { CustomWorld } from "./CustomWorld";
 import {
   launchBrowser,
   createNewPage,
   closePage,
   closeBrowser,
-  getPage,
   stopTracing,
 } from "../utils/BrowserManager";
 import { logger } from "../utils/Logger";
 import { getBrowserConfig } from "../config/browser.config";
 
 /**
- * Hooks Context - Global state for page objects accessible in step definitions
+ * Set custom World class for Cucumber
+ * This makes CustomWorld available as 'this' in step definitions
  */
-export const hooksContext = {
-  page: null as Page | null,
-  loginPage: null as LoginPage | null,
-  inventoryPage: null as InventoryPage | null,
-};
+setWorldConstructor(CustomWorld);
 
 /**
  * Before Hook - Runs before each scenario
- * Initializes browser, creates a page, and sets up page objects
+ * Initializes browser, creates a page, and attaches page objects to World fixture
  */
-Before(async function (scenario: ITestCaseHookParameter) {
+Before(async function (this: CustomWorld, scenario: ITestCaseHookParameter) {
   logger.separator();
   logger.info(`Starting scenario: ${scenario.pickle.name}`);
   logger.separator();
@@ -35,10 +37,10 @@ Before(async function (scenario: ITestCaseHookParameter) {
     await launchBrowser();
     const page: Page = await createNewPage();
 
-    // Store in global context for use in step definitions
-    hooksContext.page = page;
-    hooksContext.loginPage = new LoginPage(page);
-    hooksContext.inventoryPage = new InventoryPage(page);
+    // Attach to World (this) for use in step definitions
+    this.page = page;
+    this.loginPage = new LoginPage(page);
+    this.inventoryPage = new InventoryPage(page);
 
     logger.info("Test scenario setup completed successfully");
   } catch (error) {
@@ -51,13 +53,13 @@ Before(async function (scenario: ITestCaseHookParameter) {
  * After Hook - Runs after each scenario
  * Captures screenshot and embeds directly in Cucumber report (no file storage)
  */
-After(async function (scenario: ITestCaseHookParameter) {
+After(async function (this: CustomWorld, scenario: ITestCaseHookParameter) {
   logger.info(`Tearing down test scenario: ${scenario.pickle.name}`, {
     status: scenario.result?.status,
   });
   try {
     // Check if page exists before trying to get it
-    if (hooksContext.page && !hooksContext.page.isClosed()) {
+    if (this.page && !this.page.isClosed()) {
       try {
         const config = getBrowserConfig();
 
@@ -70,7 +72,7 @@ After(async function (scenario: ITestCaseHookParameter) {
         }
 
         // Capture screenshot in memory without saving to disk
-        const screenshotBuffer = await hooksContext.page.screenshot();
+        const screenshotBuffer = await this.page.screenshot();
 
         // Attach screenshot directly to Cucumber report as base64 in JSON
         await this.attach(screenshotBuffer, "image/png");
@@ -83,11 +85,6 @@ After(async function (scenario: ITestCaseHookParameter) {
 
     await closePage();
     await closeBrowser();
-
-    // Reset context
-    hooksContext.page = null;
-    hooksContext.loginPage = null;
-    hooksContext.inventoryPage = null;
 
     logger.info("Test scenario teardown completed");
   } catch (error) {

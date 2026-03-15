@@ -1,7 +1,7 @@
 module.exports = {
   default: {
     paths: ['tests/features/**/*.feature'],
-    require: ['tests/hooks/**/*.ts', 'tests/steps/**/*.ts'],
+    require: ['tests/support/**/*.ts', 'tests/steps/**/*.ts'],
     requireModule: ['ts-node/register'],
     format: [
       'progress-bar',
@@ -16,7 +16,7 @@ module.exports = {
   },
   smoke: {
     paths: ['tests/features/**/*.feature'],
-    require: ['tests/hooks/**/*.ts', 'tests/steps/**/*.ts'],
+    require: ['tests/support/**/*.ts', 'tests/steps/**/*.ts'],
     requireModule: ['ts-node/register'],
     format: [
       'progress-bar',

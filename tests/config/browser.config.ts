@@ -23,9 +23,28 @@ export const getBrowserConfig = (): BrowserConfig => {
   const browserName = process.env.BROWSER || "chromium";
   const isHeadless = process.env.HEADLESS !== "false";
   const slowMo = parseInt(process.env.SLOW_MO || "0", 10);
-  const viewportWidth = parseInt(process.env.VIEWPORT_WIDTH || "1280", 10);
-  const viewportHeight = parseInt(process.env.VIEWPORT_HEIGHT || "720", 10);
   const enableTracing = process.env.ENABLE_TRACING === "true";
+
+  // Handle viewport presets or custom dimensions
+  let viewportWidth = 1280;
+  let viewportHeight = 720;
+
+  const viewportPreset = process.env.VIEWPORT_PRESET?.toLowerCase();
+
+  switch (viewportPreset) {
+    case "mobile":
+      viewportWidth = 375;
+      viewportHeight = 667;
+      break;
+    case "tablet":
+      viewportWidth = 768;
+      viewportHeight = 1024;
+      break;
+    default:
+      // Use custom dimensions if provided
+      viewportWidth = parseInt(process.env.VIEWPORT_WIDTH || "1280", 10);
+      viewportHeight = parseInt(process.env.VIEWPORT_HEIGHT || "720", 10);
+  }
 
   return {
     name: browserName,
@@ -39,15 +58,6 @@ export const getBrowserConfig = (): BrowserConfig => {
     args: process.env.BROWSER_ARGS ? process.env.BROWSER_ARGS.split(",") : [],
     enableTracing: enableTracing,
   };
-};
-
-/**
- * Screenshot options for test reports
- */
-export const SCREENSHOT_CONFIG = {
-  onFailure: true,
-  onSuccess: false,
-  path: "./test-results/screenshots",
 };
 
 /**

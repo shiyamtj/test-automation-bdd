@@ -193,7 +193,6 @@ Barrel export file that re-exports all constants plus:
 Browser configuration helper that reads environment variables and provides:
 
 - `getBrowserConfig()`: Returns Playwright browser options
-- `SCREENSHOT_CONFIG`: Screenshot settings for test reports
 
 ## Troubleshooting
 
