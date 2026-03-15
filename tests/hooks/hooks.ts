@@ -11,6 +11,7 @@ import {
   stopTracing,
 } from "../utils/BrowserManager";
 import { logger } from "../utils/Logger";
+import { getBrowserConfig } from "../config/browser.config";
 
 /**
  * Hooks Context - Global state for page objects accessible in step definitions
@@ -62,11 +63,15 @@ After(async function (scenario: ITestCaseHookParameter) {
     // Check if page exists before trying to get it
     if (hooksContext.page && !hooksContext.page.isClosed()) {
       try {
-        // Stop tracing if enabled (before closing page)
-        const scenarioName = scenario.pickle.name
-          .replace(/\s+/g, "_")
-          .toLowerCase();
-        await stopTracing(scenarioName);
+        const config = getBrowserConfig();
+
+        // Stop tracing only if it was enabled
+        if (config.enableTracing) {
+          const scenarioName = scenario.pickle.name
+            .replace(/\s+/g, "_")
+            .toLowerCase();
+          await stopTracing(scenarioName);
+        }
 
         // Capture screenshot in memory without saving to disk
         const screenshotBuffer = await hooksContext.page.screenshot();
