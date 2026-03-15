@@ -7,6 +7,7 @@ import {
   Page,
 } from "@playwright/test";
 import dotenv from "dotenv";
+import path from "path";
 import { getBrowserConfig } from "../config/browser.config";
 import { logger } from "./Logger";
 
@@ -83,18 +84,77 @@ export const createNewPage = async (): Promise<Page> => {
     page.setDefaultNavigationTimeout(config.timeout);
     page.setDefaultTimeout(config.timeout);
 
+    // Start tracing if enabled
+    if (config.enableTracing) {
+      await startTracing();
+    }
+
     logger.info("Page created successfully", {
       viewport: {
         width: `${config.viewport?.width}px`,
         height: `${config.viewport?.height}px`,
       },
       navigationTimeout: `${config.timeout}ms`,
+      tracingEnabled: config.enableTracing,
     });
 
     return page;
   } catch (error) {
     logger.error("Failed to create page", error);
     throw error;
+  }
+};
+
+/**
+ * Start Playwright tracing
+ * @param traceName Optional name for the trace file
+ */
+export const startTracing = async (
+  traceName: string = "trace",
+): Promise<void> => {
+  try {
+    if (!page) {
+      logger.warn("Cannot start tracing: Page not initialized");
+      return;
+    }
+
+    await page.context().tracing.start({
+      screenshots: true,
+      snapshots: true,
+    });
+
+    logger.info(`Tracing started for scenario: ${traceName}`);
+  } catch (error) {
+    logger.error("Failed to start tracing", error);
+  }
+};
+
+/**
+ * Stop Playwright tracing and save it to a file
+ * @param traceName Name of the trace file (without extension)
+ */
+export const stopTracing = async (
+  traceName: string = "trace",
+): Promise<void> => {
+  try {
+    if (!page) {
+      logger.warn("Cannot stop tracing: Page not initialized");
+      return;
+    }
+
+    const traceDir = "./test-results/traces";
+    const tracePath = path.join(traceDir, `${traceName}.zip`);
+
+    // Create traces directory if it doesn't exist
+    const fs = require("fs");
+    if (!fs.existsSync(traceDir)) {
+      fs.mkdirSync(traceDir, { recursive: true });
+    }
+
+    await page.context().tracing.stop({ path: tracePath });
+    logger.info(`Trace saved to: ${tracePath}`);
+  } catch (error) {
+    logger.error("Failed to stop tracing", error);
   }
 };
 

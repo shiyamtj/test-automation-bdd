@@ -13,6 +13,7 @@ export interface BrowserConfig {
     height: number;
   };
   args?: string[];
+  enableTracing: boolean;
 }
 
 /**
@@ -24,6 +25,7 @@ export const getBrowserConfig = (): BrowserConfig => {
   const slowMo = parseInt(process.env.SLOW_MO || "0", 10);
   const viewportWidth = parseInt(process.env.VIEWPORT_WIDTH || "1280", 10);
   const viewportHeight = parseInt(process.env.VIEWPORT_HEIGHT || "720", 10);
+  const enableTracing = process.env.ENABLE_TRACING === "true";
 
   return {
     name: browserName,
@@ -35,6 +37,7 @@ export const getBrowserConfig = (): BrowserConfig => {
       height: viewportHeight,
     },
     args: process.env.BROWSER_ARGS ? process.env.BROWSER_ARGS.split(",") : [],
+    enableTracing: enableTracing,
   };
 };
 
