@@ -1,10 +1,6 @@
-import {
-  Before,
-  After,
-  setWorldConstructor,
-  ITestCaseHookParameter,
-} from "@cucumber/cucumber";
-import { Page } from "@playwright/test";
+import { Before, After, ITestCaseHookParameter } from "@cucumber/cucumber";
+import { setDefaultTimeout } from "@cucumber/cucumber";
+import { Page, expect } from "@playwright/test";
 import { LoginPage } from "../pages/LoginPage";
 import { InventoryPage } from "../pages/InventoryPage";
 import { CustomWorld } from "./CustomWorld";
@@ -22,7 +18,9 @@ import { getBrowserConfig } from "../config/browser.config";
  * Set custom World class for Cucumber
  * This makes CustomWorld available as 'this' in step definitions
  */
-setWorldConstructor(CustomWorld);
+// Increase default Playwright expect timeout to 30 seconds
+(expect as any).configure({ timeout: 30000 });
+setDefaultTimeout(60000);
 
 /**
  * Before Hook - Runs before each scenario

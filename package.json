@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "preinstall": "node -e \"if(process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('❌ This project requires Yarn. Please use: yarn install')\"",
-    "test": "cucumber-js",
-    "test:mobile": "VIEWPORT_PRESET=mobile cucumber-js",
-    "test:tablet": "VIEWPORT_PRESET=tablet cucumber-js",
-    "test:smoke": "cucumber-js --tags '@smoke'",
-    "test:regression": "cucumber-js --tags '@regression'",
-    "clean": "rm -rf test-results && rm -rf reports"
+    "test": "cucumber-js --format progress-bar --format html:test-results/cucumber-report.html --format json:test-results/cucumber-report.json",
+    "test:smoke": "cucumber-js --tags @smoke",
+    "test:regression": "cucumber-js --tags @regression",
+    "clean": "rm -rf test-results && rm -rf reports",
+    "report": "node generate-report.js",
+    "test:concurrent": "yarn clean &&ts-node run-tests.ts"
   },
   "keywords": [
     "cucumber",
@@ -31,9 +31,11 @@
     "@types/node": "^20.10.5",
     "playwright": "^1.40.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "multiple-cucumber-html-reporter": "^3.10.0"
   },
   "dependencies": {
+    "cross-env": "^10.1.0",
     "dotenv": "^16.3.1"
   }
 }
