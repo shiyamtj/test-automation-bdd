@@ -1,6 +1,6 @@
-import { Page, Locator } from '@playwright/test';
-import { BasePage } from './BasePage';
-import { SELECTORS } from '../config';
+import { Page, Locator } from "@playwright/test";
+import { BasePage } from "./BasePage";
+import { SELECTORS } from "../config";
 
 /**
  * InventoryPage - Page Object for SauceDemo inventory/products page
@@ -41,14 +41,14 @@ export class InventoryPage extends BasePage {
    */
   async isOnInventoryPage(): Promise<boolean> {
     const url = this.getCurrentUrl();
-    return url.includes('/inventory.html');
+    return url.includes("/inventory.html");
   }
 
   /**
    * Click on cart icon to view cart
    */
   async clickCart(): Promise<void> {
-    await this.clickElement(this.cartIcon, 'cart icon');
+    await this.clickElement(this.cartIcon, "cart icon");
   }
 
   /**
@@ -62,21 +62,56 @@ export class InventoryPage extends BasePage {
    * Open menu
    */
   async openMenu(): Promise<void> {
-    await this.clickElement(this.menuButton, 'menu button');
+    await this.clickElement(this.menuButton, "menu button");
   }
 
   /**
    * Click logout option
    */
   async logout(): Promise<void> {
-    await this.clickElement(this.logoutLink, 'logout link');
+    await this.clickElement(this.logoutLink, "logout link");
   }
 
   /**
    * Get product by index and click 'Add to Cart' button
    */
   async addProductToCart(productIndex: number): Promise<void> {
-    const addToCartButton = this.page.locator(SELECTORS.INVENTORY_PAGE.addToCartBtn).nth(productIndex);
-    await this.clickElement(addToCartButton, `add to cart button for product ${productIndex}`);
+    const addToCartButton = this.page
+      .locator(SELECTORS.INVENTORY_PAGE.addToCartBtn)
+      .nth(productIndex);
+    await this.clickElement(
+      addToCartButton,
+      `add to cart button for product ${productIndex}`,
+    );
+  }
+
+  /**
+   * Remove a product from the cart by clicking the same button (which toggles to "Remove")
+   */
+  async removeProductFromCart(productIndex: number): Promise<void> {
+    const removeButton = this.page
+      .locator(SELECTORS.INVENTORY_PAGE.removeFromCartBtn)
+      .nth(productIndex);
+    await this.clickElement(
+      removeButton,
+      `remove from cart button for product ${productIndex}`,
+    );
+    // Small pause to allow the cart badge to update after removal
+    // Wait a bit longer to ensure the cart badge updates after removal
+    await this.page.waitForTimeout(1500);
+  }
+
+  /**
+   * Get the number displayed in the cart badge (items count)
+   * Returns 0 if badge is not visible
+   */
+  async getCartBadgeCount(): Promise<number> {
+    const badge = this.page.locator(SELECTORS.INVENTORY_PAGE.cartBadge);
+    if (await badge.isVisible()) {
+      const text = await badge.textContent();
+      const count = parseInt(text ?? "0", 10);
+      return isNaN(count) ? 0 : count;
+    }
+    return 0;
   }
 }

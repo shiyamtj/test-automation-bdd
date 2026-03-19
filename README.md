@@ -195,6 +195,10 @@ The following credentials are available for testing:
 
 ## Test Results
 
+## Documentation
+
+- [Test Development Quick Reference](tests/.instructions.md)
+
 Test results are generated in the following locations:
 
 - **HTML Report**: `test-results/cucumber-report.html`

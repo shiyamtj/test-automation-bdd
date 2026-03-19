@@ -34,7 +34,9 @@ This is a comprehensive BDD test automation project using CucumberJS, Playwright
 
 ```
 test-automation-bdd/
-├── tests/                            # All test-related code
+├── .github/                         # Workspace‑specific Copilot instructions
+│   └── copilot-instructions.md      # This file
+├── tests/                            # All test‑related code
 │   ├── features/                     # Gherkin feature files
 │   │   └── login.feature             # Login test scenarios
 │   ├── steps/                        # Step definitions (Gherkin implementation)
@@ -46,8 +48,8 @@ test-automation-bdd/
 │   │   ├── BasePage.ts               # Base class with common methods
 │   │   ├── LoginPage.ts              # Login page object
 │   │   └── InventoryPage.ts          # Inventory page object
-│   ├── config/                       # Configuration & constants
-│   │   ├── index.ts                  # Selectors & config barrel export
+│   ├── config/                       # Configuration \& constants
+│   │   ├── index.ts                  # Selectors \& config barrel export
 │   │   ├── constants.ts              # URLs, timeouts, test users, error messages
 │   │   └── browser.config.ts         # Browser launch settings
 │   └── utils/                        # Test utilities
@@ -55,7 +57,9 @@ test-automation-bdd/
 │       └── BrowserManager.ts         # Browser lifecycle management
 ├── cucumber.js                       # Cucumber configuration
 ├── tsconfig.json                     # TypeScript configuration
-└── package.json                      # Project dependencies
+├── package.json                      # Project dependencies
+├── .env.example                      # Template for environment variables
+└── .env                              # Local environment overrides (git‑ignored)
 ```
 
 ### Writing Tests
