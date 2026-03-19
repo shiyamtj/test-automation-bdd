@@ -15,7 +15,6 @@ yarn-error.log*
 # Build and compiled output
 dist/
 build/
-*.js
 *.d.ts
 !cucumber.js
 
