@@ -79,6 +79,8 @@ test-automation-bdd/
 - `yarn test:tags @tag-name` - Run tests matching specific tag(s)
 - `yarn test:debug` - Run tests with Node debugger enabled
 - `yarn clean` - Clean up test results and reports directories
+- `yarn test:concurrent` - Run tests concurrently using the custom `run-tests.ts` script. This is ideal for CI environments where you want all tests to execute in parallel.
+- `yarn report` - Generate HTML and JSON test reports. Run this after executing tests to produce the report files in `test-results/`.
 
 **Note:** HTML and JSON reports are automatically generated in `test-results/` after each test run
 

@@ -192,6 +192,9 @@ The following credentials are available for testing:
 - `yarn test:regression` - Run regression tests
 - `yarn report` - Generate HTML report
 - `yarn clean` - Clean test results
+  [Additional scripts]
+- `yarn test:concurrent` - Run tests concurrently using the custom script defined in `run-tests.ts`. This script executes all tests in parallel and is useful for CI pipelines.
+- `yarn report` - Generate HTML and JSON reports (already listed). Ensure you run this after tests to view results in `test-results/`.
 
 ## Test Results
 
